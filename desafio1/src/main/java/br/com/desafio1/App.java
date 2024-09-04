@@ -10,15 +10,21 @@ import java.util.regex.Pattern;
  */
 public class App {
     public static void main(String[] args) {
+        ArrayList<String> valueResistor = parseArgsToArraList(args);
 
+        validateValueResitor(valueResistor);
+    }
+
+    private static ArrayList<String> parseArgsToArraList(String[] args) {
         ArrayList<String> valueResistor = new ArrayList<String>();
+
         valueResistor.add(args[0]);
 
         if (args.length < 3) {
             valueResistor.add(args[1]);
         }
 
-        validateValueResitor(valueResistor);
+        return valueResistor;
     }
 
     public static void validateValueResitor(ArrayList<String> array) {
@@ -40,8 +46,8 @@ public class App {
         Matcher matcher = pattern.matcher(array.get(0));
 
         String regex2 = "[M]";
-        Pattern pattern2 = Pattern.compile(regex);
-        Matcher matcher2 = pattern.matcher(array.get(0));
+        Pattern pattern2 = Pattern.compile(regex2);
+        Matcher matcher2 = pattern2.matcher(array.get(0));
 
         String numberResistor = "";
 
@@ -57,35 +63,70 @@ public class App {
             return numberResistor;
         }
 
-
-        return null;
+        return array.get(0);
     }
 
-    private static String returnColorsResistor(String numericResistor, String typeResistor) {
-        String[] colorsDefault = { "vermelho", "verde" };
-        String colorDefault = "dourado";
-        String[] colors = { "preto", "marrom", "vermelho", "laranja", "amarelo", "verde", "azul", "violeta", "cinza",
+    private static String returnColorsResistor(String valuesResistor, String typeResistor) {
+        String[] typeColorsResistors = { "preto", "marrom", "vermelho", "verde" };
+        String colorDefaultResistor = "dourado";
+        String[] colorsResistors = { "preto", "marrom", "vermelho", "laranja", "amarelo", "verde", "azul", "violeta",
+                "cinza",
                 "branco" };
+        // 0 - 'preto',
+        // 1 - 'marrom',
+        // 2 - 'vermelho', p - preto
+        // 3 - 'laranja', m - marrom
+        // 4 - 'amarelo', k - vermelho
+        // 5 - 'verde', M - verde
+        // 6 - 'azul',
+        // 7 - 'violeta',
+        // 8 - 'cinza',
+        // 9 - 'branco',
 
         ArrayList<String> colorsReturn = new ArrayList<String>();
-        ArrayList<String> arrayColors = new ArrayList<String>(Arrays.asList(colors));
+        ArrayList<String> arrayColorsResistors = new ArrayList<String>(Arrays.asList(colorsResistors));
 
-        String[] newr = numericResistor.split("");
+        String[] valuesSeparetedResistor = valuesResistor.split("");
 
-        for (String number : newr) {
-            String colorRelated = arrayColors.get(Integer.parseInt(number));
+        Integer valueParsed = Integer.parseInt(valuesResistor);
+
+        for (String number : valuesSeparetedResistor) {
+            String colorRelated = arrayColorsResistors.get(Integer.parseInt(number));
             colorsReturn.add(colorRelated);
         }
+// 100 - [marrom, preto, preto, marrom, dourado]
+// isso está errado
+        if (typeResistor == null) {
+            if (valueParsed < 100) {
+                colorsReturn.add(typeColorsResistors[0]);
 
-        if (typeResistor.equals("")) {
-            colorsReturn.add(colorsDefault[0]);
+                colorsReturn.add(colorDefaultResistor);
+
+                return colorsReturn.toString();
+            }
+
+            if (valueParsed >= 100 && valueParsed <= 1000) {
+                colorsReturn.add(typeColorsResistors[1]);
+    
+                colorsReturn.add(colorDefaultResistor);
+    
+                return colorsReturn.toString();
+            }
+        }
+        
+        if (valuesResistor.length() == 1) {
+            colorsReturn.add(typeColorsResistors[0]);
         }
 
-        if (typeResistor.equals("M")) {
-            colorsReturn.add(colorsDefault[1]);
+        if (typeResistor != null && typeResistor.equals("k")) {
+            colorsReturn.add(typeColorsResistors[2]);
         }
 
-        colorsReturn.add(colorDefault);
+        if (typeResistor != null && typeResistor.equals("M")) {
+            colorsReturn.add(typeColorsResistors[3]);
+        }
+
+        colorsReturn.add(colorDefaultResistor);
 
         return colorsReturn.toString();
     }
@@ -96,8 +137,8 @@ public class App {
         Matcher matcher = pattern.matcher(array.get(0));
 
         String regex2 = "[M]";
-        Pattern pattern2 = Pattern.compile(regex);
-        Matcher matcher2 = pattern.matcher(array.get(0));
+        Pattern pattern2 = Pattern.compile(regex2);
+        Matcher matcher2 = pattern2.matcher(array.get(0));
 
         if (matcher.find()) {
             return "k";
