@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Hello world!
- */
 public class App {
     public static void main(String[] args) {
         ArrayList<String> valueResistor = parseArgsToArraList(args);
@@ -72,30 +69,37 @@ public class App {
         String[] colorsResistors = { "preto", "marrom", "vermelho", "laranja", "amarelo", "verde", "azul", "violeta",
                 "cinza",
                 "branco" };
-        // 0 - 'preto',
-        // 1 - 'marrom',
-        // 2 - 'vermelho', p - preto
-        // 3 - 'laranja', m - marrom
-        // 4 - 'amarelo', k - vermelho
-        // 5 - 'verde', M - verde
-        // 6 - 'azul',
-        // 7 - 'violeta',
-        // 8 - 'cinza',
-        // 9 - 'branco',
 
         ArrayList<String> colorsReturn = new ArrayList<String>();
         ArrayList<String> arrayColorsResistors = new ArrayList<String>(Arrays.asList(colorsResistors));
 
         String[] valuesSeparetedResistor = valuesResistor.split("");
 
-        Integer valueParsed = Integer.parseInt(valuesResistor);
+        Boolean isDotValue = verifyIfDotValueExists(valuesResistor);
+        Integer valueParsed = 0;
 
-        for (String number : valuesSeparetedResistor) {
-            String colorRelated = arrayColorsResistors.get(Integer.parseInt(number));
-            colorsReturn.add(colorRelated);
+        if (!isDotValue) {
+            valueParsed = Integer.parseInt(valuesResistor);
+        } else {
+            String valuesResistorDontTheDot = removeDotOfValuesResistor(valuesResistor);
+
+            valueParsed = Integer.parseInt(valuesResistorDontTheDot);
+
+            valuesSeparetedResistor = valuesResistor.split("[.]");
         }
-// 100 - [marrom, preto, preto, marrom, dourado]
-// isso está errado
+
+        if (valuesSeparetedResistor.length > 2) {
+            for (int i = 0; i < valuesSeparetedResistor.length - 1; i++) {
+                String colorRelated = arrayColorsResistors.get(Integer.parseInt(valuesSeparetedResistor[i]));
+                colorsReturn.add(colorRelated);
+            }
+        } else {
+            for (int i = 0; i < valuesSeparetedResistor.length; i++) {
+                String colorRelated = arrayColorsResistors.get(Integer.parseInt(valuesSeparetedResistor[i]));
+                colorsReturn.add(colorRelated);
+            }
+        }
+
         if (typeResistor == null) {
             if (valueParsed < 100) {
                 colorsReturn.add(typeColorsResistors[0]);
@@ -107,28 +111,46 @@ public class App {
 
             if (valueParsed >= 100 && valueParsed <= 1000) {
                 colorsReturn.add(typeColorsResistors[1]);
-    
+
                 colorsReturn.add(colorDefaultResistor);
-    
+
                 return colorsReturn.toString();
             }
         }
-        
+
         if (valuesResistor.length() == 1) {
             colorsReturn.add(typeColorsResistors[0]);
         }
 
         if (typeResistor != null && typeResistor.equals("k")) {
-            colorsReturn.add(typeColorsResistors[2]);
+            if (!isDotValue) {
+                colorsReturn.add(typeColorsResistors[0]);
+                colorsReturn.add(typeColorsResistors[2]);
+            } else {
+                colorsReturn.add(typeColorsResistors[2]);
+            }
         }
 
         if (typeResistor != null && typeResistor.equals("M")) {
-            colorsReturn.add(typeColorsResistors[3]);
+            if (!isDotValue) {
+                colorsReturn.add(typeColorsResistors[0]);
+                colorsReturn.add(typeColorsResistors[3]);
+            } else {
+                colorsReturn.add(typeColorsResistors[3]);
+            }
         }
 
         colorsReturn.add(colorDefaultResistor);
 
         return colorsReturn.toString();
+    }
+
+    private static String removeDotOfValuesResistor(String valuesResistor) {
+        return valuesResistor.replace(".", "");
+    }
+
+    private static Boolean verifyIfDotValueExists(String valuesResistor) {
+        return valuesResistor.contains(".");
     }
 
     private static String validateSizeResistor(ArrayList<String> array) {
