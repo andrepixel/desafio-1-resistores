@@ -62,7 +62,7 @@ public class ItemListUseCase {
 
     public Optional<UserItemResponseDTO> createUserItemList(Optional<UserListEntity> optional,
             UserItemRequestDTO userItemRequestDTO) {
-        if (!optional.isPresent()) {
+        if (optional.isPresent()) {
             UserItemEntity entity = userMapper.toUserItemEntity(userItemRequestDTO);
 
             repository.save(entity);
