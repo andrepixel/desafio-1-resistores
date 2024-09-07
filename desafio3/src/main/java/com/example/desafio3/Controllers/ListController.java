@@ -18,7 +18,6 @@ import com.example.desafio3.Dtos.UserListRequestDTO;
 import com.example.desafio3.Dtos.UserListResponseDTO;
 import com.example.desafio3.Entities.UserListEntity;
 import com.example.desafio3.Services.ListService;
-import com.example.desafio3.Usecases.ListUseCase;
 
 @RestController
 @RequestMapping(path = "api/lists")

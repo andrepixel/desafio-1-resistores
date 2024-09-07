@@ -22,6 +22,6 @@ public class UserListEntity {
 
     private String title;
 
-    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "listID", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserItemEntity> itens;
 }

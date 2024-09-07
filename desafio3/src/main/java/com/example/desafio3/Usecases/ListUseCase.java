@@ -11,16 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.desafio3.Dtos.UserListRequestDTO;
 import com.example.desafio3.Dtos.UserListResponseDTO;
 import com.example.desafio3.Entities.UserListEntity;
-import com.example.desafio3.Mappers.UserMapper;
+import com.example.desafio3.Entities.UserListEntity;
+import com.example.desafio3.Mappers.ListMapper;
 import com.example.desafio3.Repositories.ListRepository;
 
 @Transactional
 @Service
 public class ListUseCase {
     private ListRepository repository;
-    private final UserMapper userMapper;
+    private final ListMapper userMapper;
 
-    public ListUseCase(UserMapper userMapper, ListRepository repository) {
+    public ListUseCase(ListMapper userMapper, ListRepository repository) {
         this.userMapper = userMapper;
         this.repository = repository;
     }

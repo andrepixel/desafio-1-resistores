@@ -10,7 +10,7 @@ import com.example.desafio3.Dtos.UserItemRequestDTO;
 import com.example.desafio3.Dtos.UserItemResponseDTO;
 import com.example.desafio3.Entities.UserItemEntity;
 import com.example.desafio3.Entities.UserListEntity;
-import com.example.desafio3.Mappers.UserMapper;
+import com.example.desafio3.Mappers.ListMapper;
 import com.example.desafio3.Repositories.ItemListRepository;
 
 import jakarta.transaction.Transactional;
@@ -18,10 +18,10 @@ import jakarta.transaction.Transactional;
 @Transactional
 @Service
 public class ItemListUseCase {
-    private final UserMapper userMapper;
+    private final ListMapper userMapper;
     private ItemListRepository repository;
 
-    public ItemListUseCase(UserMapper userMapper, ItemListRepository repository) {
+    public ItemListUseCase(ListMapper userMapper, ItemListRepository repository) {
         this.userMapper = userMapper;
         this.repository = repository;
     }
