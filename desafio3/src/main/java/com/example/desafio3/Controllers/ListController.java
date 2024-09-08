@@ -36,13 +36,13 @@ public class ListController {
     }
 
     @GetMapping
-    public List<UserListEntity> getAllUserList() {
-        return service.getAllUserList().get();
+    public ResponseEntity<List<UserListEntity>> getAllUserList() {
+        return ResponseEntity.ok().body(service.getAllUserList().get());
     }
 
-    @PutMapping
-    public ResponseEntity<UserListResponseDTO> updateUserList(@RequestBody UserListRequestDTO body) {
-        Optional<UserListResponseDTO> optional = service.updateUserList(body);
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserListResponseDTO> updateUserList(@RequestParam String id, @RequestBody UserListRequestDTO body) {
+        Optional<UserListResponseDTO> optional = service.updateUserList(id, body);
 
         if (optional.isPresent()) {
             return ResponseEntity.ok(optional.get());
@@ -51,8 +51,8 @@ public class ListController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<UserListResponseDTO> deleteUserList(@RequestParam(required = true) String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserListResponseDTO> deleteUserList(@RequestParam String id) {
         Optional<UserListResponseDTO> optional = service.deleteUserListByID(id);
 
         if (optional.isPresent()) {

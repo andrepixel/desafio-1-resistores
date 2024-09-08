@@ -44,13 +44,19 @@ public class ItemListUseCase {
         return Optional.empty();
     }
 
-    public Optional<UserItemResponseDTO> updateUserItemList(UserItemRequestDTO dto) {
-        Optional<UserItemEntity> optional = repository.findById(UUID.fromString(dto.id()));
+    public Optional<UserItemResponseDTO> updateUserItemList(String id, UserItemRequestDTO dto) {
+        Optional<UserItemEntity> optional = repository.findById(UUID.fromString(id));
 
         if (optional.isPresent()) {
-            UserItemEntity userItemEntity = userMapper.toUserItemEntity(dto);
+            if (dto.title() != null) {
+                optional.get().setTitle(dto.title());
+            }
+            
+            if (dto.isPriority() != null) {
+                optional.get().setIsPriority(dto.isPriority());
+            }
 
-            UserItemEntity userItemEntityDatabase = repository.save(userItemEntity);
+            UserItemEntity userItemEntityDatabase = repository.save(optional.get());
 
             UserItemResponseDTO userItemResponseDTO = userMapper.toUserItemResponseDTO(userItemEntityDatabase);
 

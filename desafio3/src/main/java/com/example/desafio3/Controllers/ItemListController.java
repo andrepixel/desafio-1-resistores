@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,9 +44,10 @@ public class ItemListController {
         return ResponseEntity.ok().body(service.getAllItemList().get());
     }
 
-    @PutMapping
-    public ResponseEntity<UserItemResponseDTO> updateUserItemList(@RequestBody UserItemRequestDTO body) {
-        Optional<UserItemResponseDTO> optional = service.updateItemList(body);
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserItemResponseDTO> updateUserItemList(@RequestParam String id,
+            @RequestBody UserItemRequestDTO body) {
+        Optional<UserItemResponseDTO> optional = service.updateItemList(id, body);
 
         if (optional.isPresent()) {
             return ResponseEntity.ok(optional.get());
@@ -54,8 +56,8 @@ public class ItemListController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<UserItemResponseDTO> deleteUserItemList(@RequestParam(required = true) String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserItemResponseDTO> deleteUserItemList(@RequestParam String id) {
         Optional<UserItemResponseDTO> optional = service.deleteItemListByID(id);
 
         if (optional.isPresent()) {

@@ -22,6 +22,8 @@ public class UserListEntity {
 
     private String title;
 
+    private Boolean isPriority;
+
     @OneToMany(mappedBy = "listID", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserItemEntity> itens;
 }

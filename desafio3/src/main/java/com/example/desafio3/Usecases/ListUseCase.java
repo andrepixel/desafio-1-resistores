@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.desafio3.Dtos.UserItemRequestDTO;
 import com.example.desafio3.Dtos.UserListRequestDTO;
 import com.example.desafio3.Dtos.UserListResponseDTO;
+import com.example.desafio3.Entities.UserItemEntity;
 import com.example.desafio3.Entities.UserListEntity;
 import com.example.desafio3.Entities.UserListEntity;
 import com.example.desafio3.Mappers.ListMapper;
@@ -46,13 +47,40 @@ public class ListUseCase {
         return Optional.empty();
     }
 
-    public Optional<UserListResponseDTO> updateUserList(UserListRequestDTO dto) {
-        Optional<UserListEntity> optional = repository.findById(UUID.fromString(dto.id()));
+    public Optional<UserListResponseDTO> updateUserList(String id, UserListRequestDTO dto) {
+        Optional<UserListEntity> optional = repository.findById(UUID.fromString(id));
 
         if (optional.isPresent()) {
-            UserListEntity userListEntity = userMapper.toUserListEntity(dto);
+            if (dto.title() != null) {
+                optional.get().setTitle(dto.title());
+            }
 
-            UserListEntity entity = repository.save(userListEntity);
+            if (dto.isPriority() != null) {
+                optional.get().setIsPriority(dto.isPriority());
+            }
+
+            if (dto.itens() != null) {
+                List<UserItemEntity> itens = optional.get().getItens();
+                List<UserItemRequestDTO> itensDto = dto.itens();
+
+                for (int i = 0; i < itens.size(); i++) {
+                    if (itens.get(i).getTitle() != itensDto.get(i).title()) {
+                        itens.get(i).setTitle(itensDto.get(i).title());
+                    }
+
+                    if (itens.get(i).getIsPriority() != itensDto.get(i).isPriority()) {
+                        itens.get(i).setIsPriority(itensDto.get(i).isPriority());
+                    }
+
+                    if (itens.get(i).getListID() != UUID.fromString(itensDto.get(i).listID())) {
+                        itens.get(i).setListID(UUID.fromString(itensDto.get(i).listID()));
+                    }
+                }
+
+                optional.get().setItens(itens);
+            }
+
+            UserListEntity entity = repository.save(optional.get());
 
             UserListResponseDTO userListResponseDTO = userMapper.toUserListResponseDTO(entity);
 

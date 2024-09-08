@@ -33,8 +33,8 @@ public class ListService {
         return listUseCase.getAllUserList();
     }
 
-    public Optional<UserListResponseDTO> updateUserList(UserListRequestDTO dto) {
-        return listUseCase.updateUserList(dto);
+    public Optional<UserListResponseDTO> updateUserList(String id, UserListRequestDTO dto) {
+        return listUseCase.updateUserList(id, dto);
     }
 
     public Optional<UserListResponseDTO> deleteUserListByID(String idUserList) {
@@ -53,8 +53,8 @@ public class ListService {
         return itemListUseCase.getAllUserItemList();
     }
 
-    public Optional<UserItemResponseDTO> updateItemList(UserItemRequestDTO dto) {
-        return itemListUseCase.updateUserItemList(dto);
+    public Optional<UserItemResponseDTO> updateItemList(String id, UserItemRequestDTO dto) {
+        return itemListUseCase.updateUserItemList(id, dto);
     }
 
     public Optional<UserItemResponseDTO> deleteItemListByID(String idUserItemList) {
